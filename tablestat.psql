@@ -1,0 +1,2 @@
+afs12=# create table signup(uid SERIAL primary key,fname varchar(50) not null,lname varchar(50) not null,email varchar(50) not null,password varchar(50) not null); 
+CREATE TABLE

@@ -1,25 +1,33 @@
 <?php
    require("utils.php");
-   $myPDO = new PDO('pgsql:host=localhost;dbname=cryptowallet','postgres','postgres');
-    
    if($_POST)
    { 
-     $first_name=$_POST['first_name'];
-     $last_name=$_POST['last_name'];
-     $email_id=$_POST['email_id'];
-     $password=$_POST['password'];
-     $role='user';
-     //$myPDO = new PDO('pgsql:host=localhost;dbname=cryptowallet','postgres','postgres');
-    if(!empty($first_name) && !empty($last_name ) && !empty($email_id) && !empty($password))
-    {  // echo "data"; 
-      //$myPDO->query("insert into users(first_name,last_name,email,password) values('$first_name','$last_name','$email_id','$password')") ;
-      $sql = "insert into users(first_name,last_name,email,password,role) values(?,?,?,?,?)";
-      $data = $myPDO->prepare($sql)->execute([$first_name, $last_name, $email_id, $password, $role]);
-    // print_r($data);
-      //die("no data");
+     $currency_id=$_POST['currency_id'];
+     $exchange_name=$_POST['exchange_name'];
+     $current_rate=$_POST['current_rate'];
+     $quantity=$_POST['quantity'];
+     $total_value=$_POST['total_value'];
+     $myPDO = new PDO('pgsql:host=localhost;dbname=cryptowallet','postgres','postgres');
+    if(!empty($currency_id) && !empty($exchange_name ) && !empty($current_rate) && !empty($quantity) && !empty($total_value))
+    {   
+      $myPDO->query("insert into signup values('$currency_id','$exchange_name','$current_rate','$quantity','$total_value')") ;
       redirect("signin.php"); 
     }
   }
+  <lable for="coin Name :">Coin Name :</lable>
+<select  width=25 heigth=25>
+<option selected>Bitcoin (BTC)</option>
+    <option value="1">ETH</option>
+    <option value="2">REM</option>
+    <option value="3">SIA</option>
+    <option value="4">DBC</option>
+    <option value="5">XRP</option>
+    <option value="6">REQ</option>
+    <option value="7">RPX</option>
+    <option value="8">LTC</option>
+    <option value="9">MAN</option>
+    <option value="10">WWB</option>
+    </select><br><br>
 ?>
 <!doctype html>
 <html lang="en">
@@ -40,7 +48,7 @@
   </head>
 
   <body class="text-center">
-    <form class="form-signin" action="signup.php" method="post">
+    <form class="form-signin" action="signin.php" method="post">
       <img class="mb-4" src="wallet.png" alt="" width="92" height="92">
       <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
 	<label for="inputEmail" class="sr-only">First Name</label>
@@ -59,3 +67,4 @@
 </body>
 </html>
 
+<?php echo $row['currency_id']." ".$row['exchange_name']." ".$row['current_rate']." ".$row['quantity']." ".$row['total_value'];?></div>
