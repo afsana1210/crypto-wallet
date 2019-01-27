@@ -1,11 +1,13 @@
 <?php
  require("utils.php");
   session_start();
-  if(!isset($_SESSION["email"]))
-  {
-    redirect("signin.php");
-  }
- //die(); 
+  error_reporting(0);
+  // if(!isset($_SESSION["email"]))
+  // {
+  //   redirect("signin.php");
+  // }
+  $myPDO = new PDO('pgsql:host=localhost;dbname=cryptowallet','postgres','postgres');
+  $currency = $myPDO->query("select * from currency");
 ?>
 <!doctype html>
 <html lang="en">
@@ -16,7 +18,7 @@
     <meta name="author" content="">
     <link rel="icon" href="wallet.png">
 
-    <title>Signin Template for Bootstrap</title>
+    <title>Dashboard</title>
 
     <!-- Bootstrap core CSS -->
     <link href="./css/bootstrap.min.css" rel="stylesheet">
@@ -37,7 +39,14 @@
       <button class="btn btn-outline-success" type="submit">Add Purchase</button>
     </form >
     <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Enter Coin Name" aria-label="Search">
+      <select class="form-control" name="currency_id">
+        <option value="">All Coins</option>
+        <?php
+        while ($row = $currency->fetch(PDO::FETCH_ASSOC)) {
+          echo '<option '.($_GET['currency_id'] == $row['id'] ? 'selected=selected' : '').' value="'.$row['id'].'">'.$row['currency_name']." (".$row['currency_abbrivation']." )".'</option>';
+        }
+        ?> 
+      </select>
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
   </div>
@@ -47,6 +56,7 @@
   
   </nav>
   <?php
+  // de8f599b-1bbe-451d-8d4a-e359354551b4
   $response = file_get_contents("https://api.coinmarketcap.com/v2/ticker/?convert=INR&limit=20&sort=rank");
   // $response = file_get_contents("https://api.coinmarketcap.com/v2/listings/");
   $result = json_decode($response, true);
@@ -80,15 +90,35 @@
   <div class="container">
   <div style="margin-top:4rem"></div>
   <?php
-  
-  $myPDO = new PDO('pgsql:host=localhost;dbname=cryptowallet','postgres','postgres');
-  $currency = $myPDO->query("
+  if (!empty($_GET['currency_id'])) {
+    $search = " and purchase.currency_id =".$_GET['currency_id'];
+  } else {
+    $search = "";
+  }
+
+  $query = "
     select currency_name,currency_abbrivation ,purchase.exchange_name,
     purchase.current_rate,purchase.quantity,purchase.total_value,date,time
     from currency
     right JOIN purchase on currency.id=purchase.currency_id
-    WHERE purchase.uid=".$_SESSION=['uid']);
+    WHERE purchase.uid=".$_SESSION['uid'].$search ;
+  
+  $countQuery = $myPDO->prepare($query);
+  $countQuery->execute();
+  $count = $countQuery->rowCount();
 
+  $currency = $myPDO->query($query);
+
+  if ($count == 0) {
+    ?>
+    <div class='jumbotron'>
+      <h3>You have not added any details for your cryptocurrency purchases.</h3>
+      <form action="coin.php" style="padding-right:50px;">
+        <button class="btn btn-outline-success" type="submit">Add Purchase</button>
+      </form >
+    </div>
+  <?php
+  }
   // echo $variable = "<script>document.write(latestPrice)</script>";
   while ($row = $currency->fetch(PDO::FETCH_ASSOC)) {
     ?>

@@ -33,6 +33,12 @@ alter table users add role varchar(30);
 
 (uid SERIAL primary key,first_name varchar(50) not null,last_name varchar(50) not null,email varchar(50) not null,password varchar(50) not null); 
 CREATE TABLE
+create table currency_exchange(eid SERIAL primary key,exchange_name varchar(256));
+insert into currency_exchange (exchange_name) values('Bitbns');
+insert into currency_exchange (exchange_name) values('Koinex');
+insert into currency_exchange (exchange_name) values('Coindelta');
+insert into currency_exchange (exchange_name) values('binance');
+insert into currency_exchange (exchange_name) values('Zebpay');
 
 
 

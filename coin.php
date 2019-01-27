@@ -2,15 +2,16 @@
 <?php
    require("utils.php");
    session_start();
-   if(!isset($_SESSION["email"]))
- {
-  redirect("signin.php");
- }
+  //  if(!isset($_SESSION["email"]))
+  //   {
+  //     redirect("signin.php");
+  //   }
 
    $myPDO = new PDO('pgsql:host=localhost;dbname=cryptowallet','postgres','postgres');
   
    if($_POST)
-   { //print_r($_POST);die;
+   { 
+     //print_r($_POST);die;
      $currency_id=$_POST['currency_id'];
      $exchange_name=$_POST['exchange_name'];
      $current_rate=$_POST['current_rate'];
@@ -29,7 +30,8 @@
       redirect("dashboard.php");
     }
   }
-   $result = $myPDO->query("select * from currency");
+   $currency = $myPDO->query("select * from currency");
+   $currency_exchange = $myPDO->query("select * from currency_exchange");
    
   ?>
 <!doctype html>
@@ -52,6 +54,7 @@
       function getTotalValue() {
         var total = document.getElementById("Current_rate").value * document.getElementById("quantity").value;
         document.getElementById("total_value").value = total;
+        document.getElementById("total_value_label").innerHTML = total;
       }
     </script>
   </head>
@@ -88,7 +91,7 @@
     <div class="col-md-08">
        <select class="form-control" name="currency_id" required>
 <?php
-while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+while ($row = $currency->fetch(PDO::FETCH_ASSOC)) {
    echo '<option value="'.$row['id'].'">'.$row['currency_name']." (".$row['currency_abbrivation']." )".'</option>';
 }
  ?> 
@@ -98,8 +101,16 @@ while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
    <div class="form-group">
     <label for="exchange_name" class="col-md-08 control-label">Exchange Name </label>
     <div class="col-md-08">
-      <input type="text" class="form-control" id="exchange_name" placeholder="Exchange Name" name="exchange_name" required>
-    </div>
+    <select class="form-control" name="exchange_name" id="exchange_name" required>
+<?php
+while ($row = $currency_exchange->fetch(PDO::FETCH_ASSOC)) {
+   echo '<option value="'.$row['exchange_name'].'">'.$row['exchange_name'].'</option>';
+}
+ ?> 
+   </select>
+  
+      <!-- <input type="text" class="form-control" id="exchange_name" placeholder="Exchange Name" name="exchange_name" required>
+     --></div>
   </div>
   <div class="form-group">
     <label for="Current_rate " class="col-md-08 control-label">Current Rate </label>
@@ -116,7 +127,8 @@ while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
   <div class="form-group">
     <label for="total_value " class="col-md-08 control-label">Total Value </label>
     <div class="col-md-08">
-      <input type="text" value="" class="form-control" id="total_value" placeholder="Total Value  " name="total_value" required>
+      <label id="total_value_label"></label>
+      <input type="hidden" value="" class="form-control" id="total_value" placeholder="Total Value  " name="total_value" required>
     </div>
   </div>
   <div class="form-group">
