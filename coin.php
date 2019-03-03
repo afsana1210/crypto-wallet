@@ -115,13 +115,13 @@ while ($row = $currency_exchange->fetch(PDO::FETCH_ASSOC)) {
   <div class="form-group">
     <label for="Current_rate " class="col-md-08 control-label">Current Rate </label>
     <div class="col-md-08">
-      <input type="text" class="form-control" id="Current_rate" placeholder="Current Rate " name="current_rate" required>
+      <input type="text" class="form-control" id="Current_rate" placeholder="Current Rate " name="current_rate" required pattern="[0-9]{1}">
     </div>
   </div>
   <div class="form-group">
     <label for="quantity " class="col-md-08 control-label">Quantity </label>
     <div class="col-md-08">
-      <input type="text" class="form-control" onblur="getTotalValue()" id="quantity" placeholder="Quantity  " name="quantity" required>
+      <input type="text" class="form-control" onblur="getTotalValue()" id="quantity" placeholder="Quantity  " name="quantity" required pattern="[0-9]{1}">
     </div>
   </div>
   <div class="form-group">

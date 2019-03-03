@@ -2,9 +2,9 @@
 <?php
   session_start();
    require("utils.php");
-
+   
    $myPDO = new PDO('pgsql:host=localhost;dbname=cryptowallet','postgres','postgres');
-     
+
    if($_POST)
     {
       $email_id=$_POST['email_id'];

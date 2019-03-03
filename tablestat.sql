@@ -42,3 +42,4 @@ insert into currency_exchange (exchange_name) values('Zebpay');
 
 
 
+update table users set role="admin" where email="admin@gmail.com";

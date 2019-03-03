@@ -44,15 +44,15 @@
       <img class="mb-4" src="wallet.png" alt="" width="92" height="92">
       <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
 	<label for="inputEmail" class="sr-only">First Name</label>
-      <input type="text" id="inputEmail" class="form-control" name="first_name" placeholder="First Name" required="" autofocus="">
+      <input type="text" id="inputEmail" class="form-control" name="first_name" placeholder="First Name" required="" autofocus="" pattern="[A-Za-z]{3}">
 	<label for="inputEmail" class="sr-only">Last Name</label>
-      <input type="text" id="inputEmail" class="form-control" name="last_name" placeholder="Last Name" required="" autofocus="">      
+      <input type="text" id="inputEmail" class="form-control" name="last_name" placeholder="Last Name" required="" autofocus="" pattern="[A-Za-z]{3}">      
 	<label for="inputEmail" class="sr-only">Email address</label>
       <input type="email" id="inputEmail" class="form-control" name="email_id" placeholder="Email address" required="" autofocus="">
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required="">
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
-      <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+      <p class="mt-5 mb-3 text-muted">© 2018-2019</p>
     </form>
   
 
